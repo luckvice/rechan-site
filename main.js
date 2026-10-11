@@ -220,6 +220,49 @@
     hostReplace(host, svg);
   }
 
+  // FPS médio por cenário no benchmark final (série única), contra os 60 FPS.
+  function drawFinal(host) {
+    const data = [
+      { label: "S01", fps: 59.66 },
+      { label: "S02", fps: 58.91 },
+      { label: "S03", fps: 59.19 },
+      { label: "S04", fps: 60.05 },
+      { label: "S05", fps: 60.05 },
+      { label: "S06", fps: 59.05 },
+      { label: "S07", fps: 60.05, note: "hub" },
+    ];
+    const fmt2 = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const W = Math.max(280, host.clientWidth);
+    const bh = 18, gap = 10;
+    const m = { l: 40, r: 14, t: 26, b: 30 };
+    const ih = data.length * bh + (data.length - 1) * gap;
+    const H = m.t + ih + m.b;
+    const iw = W - m.l - m.r;
+    const max = 62;
+    const x = (v) => m.l + (v / max) * iw;
+
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, height: H, "aria-hidden": "true" });
+    for (const t of [0, 20, 40]) {
+      svg.append(el("line", { x1: x(t), x2: x(t), y1: m.t - 6, y2: m.t + ih, stroke: token("--chart-grid"), "stroke-width": 1, "shape-rendering": "crispEdges" }));
+      svg.append(el("text", { class: "tick", x: x(t), y: m.t + ih + 20, "text-anchor": "middle" }, String(t)));
+    }
+    svg.append(el("line", { x1: x(60), x2: x(60), y1: m.t - 6, y2: m.t + ih, stroke: token("--wip"), "stroke-width": 1, "shape-rendering": "crispEdges" }));
+    svg.append(el("text", { class: "tick", x: x(60), y: m.t + ih + 20, "text-anchor": "middle" }, "60"));
+    svg.append(el("text", { class: "goal", x: x(60), y: m.t - 12, "text-anchor": "end" }, "Meta: 60 FPS"));
+
+    const tip = makeTooltip(host);
+    data.forEach((d, i) => {
+      const by = m.t + i * (bh + gap);
+      svg.append(el("text", { class: "cat", x: m.l - 10, y: by + bh / 2 + 4, "text-anchor": "end" }, d.label));
+      const hit = el("rect", { class: "hit", x: m.l, y: by - gap / 2, width: iw, height: bh + gap });
+      const mark = el("path", { class: "mark", d: barPath(x(0), x(d.fps), by, bh), fill: token("--chart-b") });
+      svg.append(hit, mark);
+      svg.append(el("text", { class: "val-in", x: x(d.fps) - 8, y: by + bh / 2 + 4.5, "text-anchor": "end", fill: "#140800" }, fmt2(d.fps)));
+      bindHit(hit, tip, `<b>Cenário ${d.label}${d.note ? ` (${d.note})` : ""}</b><br>${fmt2(d.fps)} FPS médios`, x(d.fps), by);
+    });
+    hostReplace(host, svg);
+  }
+
   function hostReplace(host, svg, before) {
     const tip = host.querySelector(".tooltip");
     host.replaceChildren(...[before, svg, tip].filter(Boolean));
@@ -238,6 +281,7 @@
       { label: "S06", before: 41.6, after: 54.3 },
     ], ["Buffer duplo", "Triple buffering"])],
     [document.getElementById("chart-cpu"), drawCpu],
+    [document.getElementById("chart-final"), drawFinal],
   ].filter(([host]) => host);
 
   const render = () => charts.forEach(([host, draw]) => {

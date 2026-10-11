@@ -617,7 +617,7 @@ p:last-child { margin-bottom: 0; }
 
 .timeline {
   list-style: none; padding: 0; margin: clamp(36px, 5vw, 52px) 0;
-  display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 0;
   position: relative;
 }
 .timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: linear-gradient(90deg, var(--line-2), var(--amber)); }
@@ -629,7 +629,7 @@ p:last-child { margin-bottom: 0; }
 .timeline time { display: block; font: 700 .95rem/1.2 var(--font-cond); letter-spacing: .05em; color: var(--yellow); text-transform: uppercase; }
 .timeline span { display: block; color: var(--text-2); font-size: .9rem; line-height: 1.4; margin-top: 4px; }
 @media (max-width: 880px) {
-  .timeline { grid-template-columns: 1fr; gap: 14px; padding-left: 26px; }
+  .timeline { grid-auto-flow: row; grid-template-columns: 1fr; gap: 14px; padding-left: 26px; }
   .timeline::before { left: 5px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; background: linear-gradient(180deg, var(--line-2), var(--amber)); }
   .timeline li { padding: 0; }
   .timeline li::before { left: -26px; top: 3px; }
@@ -663,3 +663,8 @@ p:last-child { margin-bottom: 0; }
 @media (forced-colors: active) {
   .yk { -webkit-text-fill-color: CanvasText; background: none; filter: none; }
 }
+
+/* Beta 1: meta batida e lista de tarefas planejadas no quadro de status. */
+.stat-done { color: var(--good); }
+.planned li { padding-left: 18px; position: relative; }
+.planned li::before { content: "○"; position: absolute; left: 0; color: var(--text-2); }

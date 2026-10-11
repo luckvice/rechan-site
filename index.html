@@ -63,8 +63,8 @@
           </h1>
           <p class="hero-sub">O clássico de PlayStation de 2000 reconstruído do zero, rodando nativo no PC, no Mac com Metal e no PSP.</p>
           <div class="cta">
-            <a class="btn btn-primary" href="https://github.com/SilverwireGames/ReChan" rel="noopener">Ver o projeto no GitHub</a>
-            <a class="btn btn-ghost" href="#psp">Conhecer a PSP Edition</a>
+            <a class="btn btn-primary" href="https://github.com/luckvice/ReChanMetal/releases/tag/v1.0.0-beta1_PSP" rel="noopener">Baixar a PSP Edition Beta 1</a>
+            <a class="btn btn-ghost" href="https://github.com/SilverwireGames/ReChan" rel="noopener">Ver o projeto no GitHub</a>
           </div>
           <ul class="platforms" aria-label="Plataformas">
             <li>Windows</li><li>Linux</li><li>macOS · Metal</li><li>PSP</li>
@@ -202,22 +202,23 @@
           </article>
 
           <article class="card version version-psp">
-            <img class="psp-badge" src="assets/psp-edition.png" alt="PSP Edition 1.0.0" width="408" height="52" loading="lazy">
-            <p class="tag tag-live">Em desenvolvimento</p>
+            <img class="psp-badge" src="assets/psp-edition.png" alt="PSP Edition Beta 1" width="460" height="52" loading="lazy">
+            <p class="tag tag-live">Beta 1 · pré-release</p>
             <h3 class="version-name">PSP Edition</h3>
             <p class="version-by">por <strong>Lucas Marcelo Soares</strong></p>
             <dl class="specs">
               <div><dt>Plataforma</dt><dd>PSP (PSPSDK, MIPS Allegrex)</dd></div>
               <div><dt>Render</dt><dd>Backend GU próprio</dd></div>
               <div><dt>Tela</dt><dd>480×272 nativa</dd></div>
+              <div><dt>Lançamento</dt><dd>Beta 1, 11/10/2026</dd></div>
             </dl>
             <ul class="ticks">
               <li>Sem emulação e sem GLFW/OpenGL: o jogo fala direto com o GU</li>
-              <li>CPU a 333 MHz, triple buffering e depth buffer na eDRAM</li>
-              <li>Áudio em streaming, controle via <span class="mono">sceCtrl</span> e EBOOT.PBP de ~3,7 MB</li>
-              <li>Menus nativos com prompts PSP e sem opções de PC</li>
+              <li>58,9 a 60,05&nbsp;FPS nos 7 cenários do benchmark final no PSP-3000</li>
+              <li>Vídeos com legendas em seis idiomas, HUD Moderno ou Clássico e câmeras mais próximas</li>
+              <li>Extrai os arquivos da imagem do seu disco no próprio PSP</li>
             </ul>
-            <a class="btn btn-primary btn-block" href="#psp">Ver a PSP Edition</a>
+            <a class="btn btn-primary btn-block" href="https://github.com/luckvice/ReChanMetal/releases/tag/v1.0.0-beta1_PSP" rel="noopener">Baixar a Beta 1</a>
           </article>
         </div>
       </div>
@@ -254,10 +255,13 @@
             <li>Texturas TIM/PSX decodificadas por página, com transparência, depth e culling</li>
             <li>Música em streaming com ADPCM duplo e vozes lidas em segundo plano, sem travar a luta</li>
             <li>Interface pensada para a tela pequena: prompts △ ○ × □, selo PSP EDITION e menus sem resolução, VSync ou MSAA</li>
+            <li>Vídeos do jogo em streaming, com áudio XA e legendas em seis idiomas; modo cinema opcional a 30&nbsp;FPS estáveis</li>
+            <li>No primeiro boot, o jogo extrai a imagem do disco e pede idioma e estilo do HUD</li>
           </ul>
           <div class="hud-panel">
             <p class="hud-title">Como jogar</p>
-            <p>Extraia os assets com o ReChan a partir da sua cópia do jogo. No Memory Stick, o <span class="mono">EBOOT.PBP</span> fica em <span class="mono">PSP/GAME/RECHAN/</span> e os assets em <span class="mono">PSP/GAME/RECHAN/data/</span>. O pacote não traz imagem de disco nem conteúdo original.</p>
+            <p>Precisa de um PSP-2000, 3000 ou Go com custom firmware ou HEN, e da imagem do seu disco americano (<span class="mono">SLUS-00684</span>, de preferência o <span class="mono">.bin</span>). Copie a pasta <span class="mono">RECHAN</span> do zip para <span class="mono">PSP/GAME/</span>, a imagem para <span class="mono">PSP/GAME/RECHAN/discimage/</span> e abra o jogo: ele extrai o que precisa em alguns minutos. O pacote não traz imagem de disco nem conteúdo original.</p>
+            <p><a class="link" href="https://github.com/luckvice/ReChanMetal/releases/tag/v1.0.0-beta1_PSP" rel="noopener">Baixar a Beta 1 no GitHub</a></p>
           </div>
         </div>
       </div>
@@ -286,9 +290,9 @@
             <p class="stat-delta up">eram 5,8%</p>
           </div>
           <div class="stat">
-            <p class="stat-label">Cenário S03 com triple buffering</p>
-            <p class="stat-value">56,0 <small>FPS</small></p>
-            <p class="stat-delta up">era 42,4 (+32%)</p>
+            <p class="stat-label">Hub no benchmark final</p>
+            <p class="stat-value">60,05 <small>FPS</small></p>
+            <p class="stat-delta up">era 19,8 na primeira medição, em 19/09</p>
           </div>
           <div class="stat">
             <p class="stat-label">VRAM usada</p>
@@ -297,7 +301,7 @@
           </div>
         </div>
 
-        <p class="rounds-intro">Só em 10/10 foram quatro rodadas. Cada uma usa o benchmark que isola o próprio problema, então compare os números dentro de uma rodada, não entre rodadas.</p>
+        <p class="rounds-intro">Em 10 e 11/10 foram cinco rodadas. Cada uma usa o benchmark que isola o próprio problema, então compare os números dentro de uma rodada, não entre rodadas.</p>
 
         <ol class="rounds">
           <li class="round">
@@ -314,7 +318,7 @@
               <figure class="card chart-card">
                 <figcaption>
                   <h4>FPS médio por etapa</h4>
-                  <p>PSP-3000, média dos 7 cenários. A linha superior marca a meta de 60&nbsp;FPS, ainda em aberto.</p>
+                  <p>PSP-3000, média dos 7 cenários. A linha superior marca a meta de 60&nbsp;FPS, alcançada na rodada 5.</p>
                 </figcaption>
                 <div class="chart" id="chart-rounds" role="img" aria-label="FPS médio por etapa: base 29,1; VBlank adiado 34,4; perfil 1 35,5; perfil 2 38,3; perfil 3 38,9."></div>
                 <details class="data-table">
@@ -556,6 +560,49 @@
               </ul>
             </div>
           </li>
+          <li class="round">
+            <header class="round-head">
+              <span class="round-num" aria-hidden="true">5</span>
+              <div>
+                <p class="round-kicker">Rodada 5 · benchmark final da Beta 1, com o HUD Moderno</p>
+                <h3 class="round-title">60 FPS no PSP-3000</h3>
+              </div>
+              <p class="round-gain">58,9 a 60,05&nbsp;FPS</p>
+            </header>
+
+            <div class="round-body">
+              <div class="round-visual">
+                <figure class="card chart-card">
+                  <figcaption>
+                    <h4>FPS médio por cenário</h4>
+                    <p>Build da Beta 1 (commit <span class="mono">c6d5f30</span>), 600 frames por cenário. A linha marca 60&nbsp;FPS.</p>
+                  </figcaption>
+                  <div class="chart" id="chart-final" role="img" aria-label="FPS médio por cenário no benchmark final. S01 59,66; S02 58,91; S03 59,19; S04 60,05; S05 60,05; S06 59,05; S07, o hub, 60,05."></div>
+                  <details class="data-table">
+                    <summary>Ver dados em tabela</summary>
+                    <table>
+                      <thead><tr><th scope="col">Cenário</th><th scope="col">FPS médio</th><th scope="col">CPU por frame</th></tr></thead>
+                      <tbody>
+                        <tr><th scope="row">S01</th><td>59,66</td><td>78%</td></tr>
+                        <tr><th scope="row">S02</th><td>58,91</td><td>85%</td></tr>
+                        <tr><th scope="row">S03</th><td>59,19</td><td>73%</td></tr>
+                        <tr><th scope="row">S04</th><td>60,05</td><td>65%</td></tr>
+                        <tr><th scope="row">S05</th><td>60,05</td><td>68%</td></tr>
+                        <tr><th scope="row">S06</th><td>59,05</td><td>79%</td></tr>
+                        <tr><th scope="row">S07 (hub)</th><td>60,05</td><td>62%</td></tr>
+                      </tbody>
+                    </table>
+                  </details>
+                </figure>
+                <p class="round-lead">O p95 do frame ficou entre 16,8 e 19,3&nbsp;ms. Em 600 frames por cenário o heap variou no máximo 32&nbsp;KB, e a VRAM ficou fixa em 1,57&nbsp;MB. No hub, os 623 draws por frame da primeira medição caíram para 76.</p>
+              </div>
+
+              <div class="hud-panel">
+                <p class="hud-title">O que ainda está aberto</p>
+                <p>Os 60&nbsp;FPS vieram, mas a folga ainda não. Quatro cenários passam da meta de 70% de CPU por frame, de 11,7&nbsp;ms: S01, S02, S03 e S06. Por isso combates cheios ainda podem cair abaixo de 60&nbsp;FPS de vez em quando. Esse corte é a próxima tarefa, depois da beta.</p>
+              </div>
+            </div>
+          </li>
         </ol>
 
         <h3 class="sub-head">Antes disso, em setembro</h3>
@@ -612,70 +659,77 @@
         <header class="section-head">
           <p class="kicker">Direto do Vision Master</p>
           <h2 id="status-title" class="yk">Estado atual</h2>
-          <p class="lead">Retrato de 10/10/2026 do quadro de tarefas do projeto (<span class="mono">docs/visionmaster</span>). Metas que ainda não foram batidas aparecem como abertas.</p>
+          <p class="lead">Retrato de 11/10/2026 do quadro de tarefas do projeto (<span class="mono">docs/visionmaster</span>), no dia da Beta 1. Metas que ainda não foram batidas aparecem como abertas.</p>
         </header>
 
         <div class="stats stats-status">
-          <div class="stat"><p class="stat-label">Tarefas concluídas</p><p class="stat-value">7</p></div>
-          <div class="stat"><p class="stat-label">Em andamento</p><p class="stat-value">4</p></div>
-          <div class="stat"><p class="stat-label">Plataformas</p><p class="stat-value">4</p></div>
-          <div class="stat"><p class="stat-label">Meta de 60 FPS no PSP</p><p class="stat-value stat-open">Aberta</p></div>
+          <div class="stat"><p class="stat-label">Tarefas concluídas</p><p class="stat-value">19</p></div>
+          <div class="stat"><p class="stat-label">Em andamento</p><p class="stat-value">2</p></div>
+          <div class="stat"><p class="stat-label">Planejadas</p><p class="stat-value">6</p></div>
+          <div class="stat"><p class="stat-label">Meta de 60 FPS no PSP</p><p class="stat-value stat-done">Batida</p></div>
         </div>
 
         <div class="board">
           <div class="board-col">
             <h3 class="board-head"><span class="state state-wip" aria-hidden="true">◐</span> Em andamento</h3>
             <article class="card task">
-              <h4>Otimizar a submissão GU no PSP</h4>
-              <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="10" aria-valuenow="7" aria-label="7 de 10 itens"><span style="--p:70%"></span></div>
-              <p class="task-meta">7 de 10 itens</p>
-              <p>Quatro rodadas medidas no PSP-3000 em 10/10, e a release rel9 já foi testada no console pelo XMB. Faltam os 60 FPS, a ausência total de alocações nas rotinas críticas e uma nova sessão longa no console.</p>
-              <p class="task-note"><span class="tag">Pendente</span> Travamento intermitente na troca S06→S07 do benchmark, com suspeita de corrupção de heap antiga.</p>
+              <h4>Folga de CPU de 70% no PSP</h4>
+              <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-label="0 de 6 itens"><span style="--p:0%"></span></div>
+              <p class="task-meta">0 de 6 itens · depois da beta</p>
+              <p>Os 60&nbsp;FPS já vieram; agora a meta é gastar no máximo 11,7&nbsp;ms de CPU por frame nos 7 cenários, para absorver picos de combate e multidão. Hoje S01, S02, S03 e S06 ficam entre 73% e 85% do frame.</p>
             </article>
             <article class="card task">
-              <h4>Crash da fase 2, som e braços do Jackie</h4>
-              <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="10" aria-valuenow="7" aria-label="7 de 10 itens"><span style="--p:70%"></span></div>
-              <p class="task-meta">7 de 10 itens</p>
-              <p>Corrigidos o estouro de memória na fase 2, os efeitos sonoros e a cor das mangas, já validados no PPSSPP. Falta confirmar no PSP real.</p>
+              <h4>Este site</h4>
+              <p>Atualizado a cada etapa com os dados registrados no Vision Master e no histórico git.</p>
             </article>
-            <article class="card task">
-              <h4>Rastro escuro do Jackie</h4>
-              <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="7" aria-valuenow="5" aria-label="5 de 7 itens"><span style="--p:71%"></span></div>
-              <p class="task-meta">5 de 7 itens</p>
-              <p>O rastro de movimento escurecia o cenário em vez de clareá-lo. O modo 3 de semitransparência do PSX soma um quarto da cor ao fundo inteiro, e o PSP reduzia o fundo a um quarto. Corrigido e coberto por teste; falta a confirmação visual no PSP real.</p>
-            </article>
-            <article class="card task">
-              <h4>UI/UX nativa no PSP</h4>
-              <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="17" aria-valuenow="1" aria-label="1 de 17 itens"><span style="--p:6%"></span></div>
-              <p class="task-meta">1 de 17 itens</p>
-              <p>Primeira parte entregue: prompts PSP, menus sem opções de PC e selo PSP EDITION. Seguem HUD legível em 480×272, novas artes e tipografia.</p>
-            </article>
+
+            <h3 class="board-head board-head-sm">Planejadas · features visuais do PSP</h3>
+            <ul class="plain planned">
+              <li>Chuva na primeira fase, com poças refletindo</li>
+              <li>Telas clássicas da versão americana, selecionáveis</li>
+              <li>Estudo de anti-aliasing viável no GE do PSP</li>
+              <li>Blur</li>
+              <li>Fog</li>
+              <li>Melhorias de iluminação e sombras</li>
+            </ul>
           </div>
 
           <div class="board-col">
             <h3 class="board-head"><span class="state state-done" aria-hidden="true">✓</span> Concluídas</h3>
             <ol class="done-list">
-              <li><time datetime="2026-09-19">19/09</time> Porte macOS com backend Metal</li>
-              <li><time datetime="2026-09-19">19/09</time> Porte PSP nativo: EBOOT, GU, áudio e controle</li>
+              <li><time datetime="2026-10-11">11/10</time> Release da PSP Edition Beta 1</li>
+              <li><time datetime="2026-10-11">11/10</time> Vídeos no PSP com legendas em seis idiomas</li>
+              <li><time datetime="2026-10-11">11/10</time> Idioma e estilo do HUD no primeiro boot</li>
+              <li><time datetime="2026-10-11">11/10</time> Créditos com os contribuidores no menu principal</li>
+              <li><time datetime="2026-10-11">11/10</time> Três câmeras mais próximas no PSP</li>
+              <li><time datetime="2026-10-11">11/10</time> Modo cinema com 30&nbsp;FPS fixos</li>
+              <li><time datetime="2026-10-11">11/10</time> Otimização da submissão GU: 60&nbsp;FPS no PSP-3000</li>
+              <li><time datetime="2026-10-11">11/10</time> UI/UX nativa no PSP: HUD, artes e menus</li>
+              <li><time datetime="2026-10-11">11/10</time> HUD HD do PC otimizado para o PSP</li>
+              <li><time datetime="2026-10-11">11/10</time> Correção: crash da fase 2, som e braços do Jackie</li>
+              <li><time datetime="2026-10-11">11/10</time> Correção: rastro escuro do Jackie</li>
+              <li><time datetime="2026-10-11">11/10</time> Correção: build desktop depois do porte PSP</li>
+              <li><time datetime="2026-09-19">19/09</time> Release completa para teste no PSP real</li>
+              <li><time datetime="2026-09-19">19/09</time> Depuração USB no PSP real com PSPLINK</li>
               <li><time datetime="2026-09-19">19/09</time> Correção: escurecimento da geometria no PSP</li>
               <li><time datetime="2026-09-19">19/09</time> Correção: ciclo de vida do renderer e uploads de páginas GU</li>
               <li><time datetime="2026-09-19">19/09</time> Correção: queda do personagem no limbo</li>
-              <li><time datetime="2026-09-19">19/09</time> Release completa para teste no PSP real</li>
-              <li><time datetime="2026-09-19">19/09</time> Depuração USB no PSP real com PSPLINK</li>
+              <li><time datetime="2026-09-19">19/09</time> Porte PSP nativo: EBOOT, GU, áudio e controle</li>
+              <li><time datetime="2026-09-19">19/09</time> Porte macOS com backend Metal</li>
             </ol>
 
             <h3 class="board-head board-head-sm">Módulos</h3>
             <ul class="modules">
-              <li><span class="state state-done" aria-hidden="true">✓</span> Renderização <em>verificado</em></li>
-              <li><span class="state state-done" aria-hidden="true">✓</span> Áudio <em>implementado</em></li>
-              <li><span class="state state-done" aria-hidden="true">✓</span> Backend <em>implementado</em></li>
-              <li><span class="state state-done" aria-hidden="true">✓</span> Gameplay <em>implementado</em></li>
+              <li><span class="state state-done" aria-hidden="true">✓</span> Áudio <em>verificado</em></li>
+              <li><span class="state state-done" aria-hidden="true">✓</span> Vídeos <em>verificado</em></li>
+              <li><span class="state state-done" aria-hidden="true">✓</span> HUD <em>verificado</em></li>
+              <li><span class="state state-done" aria-hidden="true">✓</span> Menus <em>verificado</em></li>
+              <li><span class="state state-done" aria-hidden="true">✓</span> Entrada <em>verificado</em></li>
+              <li><span class="state state-done" aria-hidden="true">✓</span> Build <em>verificado</em></li>
+              <li><span class="state state-done" aria-hidden="true">✓</span> Release <em>verificado</em></li>
+              <li><span class="state state-wip" aria-hidden="true">◐</span> Desempenho <em>em andamento</em></li>
+              <li><span class="state state-wip" aria-hidden="true">◐</span> Renderer <em>em andamento</em></li>
               <li><span class="state state-wip" aria-hidden="true">◐</span> Plataforma <em>em andamento</em></li>
-              <li><span class="state state-wip" aria-hidden="true">◐</span> Build <em>em andamento</em></li>
-              <li><span class="state state-wip" aria-hidden="true">◐</span> HUD <em>em andamento</em></li>
-              <li><span class="state state-wip" aria-hidden="true">◐</span> Entrada <em>em andamento</em></li>
-              <li><span class="state state-wip" aria-hidden="true">◐</span> Frontend <em>em andamento</em></li>
-              <li><span class="state state-wip" aria-hidden="true">◐</span> Assets <em>em andamento</em></li>
             </ul>
           </div>
         </div>
@@ -709,7 +763,7 @@
               <p class="tag">Colaborador</p>
               <h3>GNK</h3>
               <p class="credit-org">GABRIELNNK</p>
-              <p>Legendas <span class="mono">.srt</span> no player de vídeo e no ModLoader, botões de salvar e carregar e a correção da colisão de portas durante as cutscenes.</p>
+              <p>Tradução para português, legendas dos vídeos (<span class="mono">.srt</span> no player e no ModLoader), botões de salvar e carregar e a correção da colisão de portas durante as cutscenes. As legendas em português dele são a base das seis línguas da PSP Edition.</p>
               <a class="link" href="https://github.com/GABRIELNNK" rel="noopener">GitHub · GABRIELNNK</a>
             </div>
           </article>
@@ -719,7 +773,7 @@
               <p class="tag">Metal Edition e PSP Edition</p>
               <h3>Lucas Marcelo Soares</h3>
               <p class="credit-org">luckvice</p>
-              <p>Backend Metal para macOS, suporte a DualSense, tradução <span class="nw">pt-BR</span> e o porte nativo para PSP, com toda a rodada de otimização no aparelho.</p>
+              <p>Backend Metal para macOS, suporte a DualSense e o porte nativo para PSP, com toda a rodada de otimização no aparelho e a Beta 1.</p>
               <a class="link" href="https://github.com/luckvice/ReChanMetal" rel="noopener">GitHub · luckvice/ReChanMetal</a>
             </div>
           </article>
@@ -732,6 +786,7 @@
           <li><time>17/09/2026</time><span>Metal Edition, v1.1.0</span></li>
           <li><time>18/09/2026</time><span>Começa o porte nativo para PSP</span></li>
           <li><time>10/10/2026</time><span>Menus nativos, selo PSP EDITION e quatro rodadas de desempenho no PSP-3000</span></li>
+          <li><time>11/10/2026</time><span>PSP Edition Beta 1: 60&nbsp;FPS, vídeos com legendas e extração no próprio PSP</span></li>
         </ol>
 
         <div class="hud-panel original">
