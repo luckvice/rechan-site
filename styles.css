@@ -373,7 +373,7 @@ p:last-child { margin-bottom: 0; }
 @media (max-width: 720px) { .gallery { grid-template-columns: 1fr; } }
 
 /* versões */
-.versions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
+.versions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; align-items: stretch; }
 .version { padding: 24px 22px 22px; display: flex; flex-direction: column; position: relative; }
 .version-name {
   font-family: var(--font-yk); font-weight: 400; font-size: 2rem; line-height: 1.05;
