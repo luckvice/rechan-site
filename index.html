@@ -63,7 +63,7 @@
           </h1>
           <p class="hero-sub">O clássico de PlayStation de 2000 reconstruído do zero, rodando nativo no PC, no Mac com Metal e no PSP.</p>
           <div class="cta">
-            <a class="btn btn-primary" href="https://github.com/luckvice/ReChan-Enhanced/releases/tag/v1.0.0-beta2_PSP" rel="noopener">Baixar a RE:Chan HD Edition Beta 2</a>
+            <a class="btn btn-primary" href="assets/downloads/rechan-psp-beta3.zip">Baixar a RE:Chan HD Edition Beta 3</a>
             <a class="btn btn-ghost" href="https://github.com/luckvice/ReChan-Enhanced" rel="noopener">Ver o fork no GitHub</a>
           </div>
           <ul class="platforms" aria-label="Plataformas">
@@ -204,23 +204,25 @@
           </article>
 
           <article class="card version version-psp">
-            <img class="psp-badge" src="assets/psp-edition.png" alt="RE:Chan HD Edition Beta 2" width="648" height="52" loading="lazy">
-            <p class="tag tag-live">Beta 2 · pré-release</p>
+            <img class="psp-badge" src="assets/psp-edition.png" alt="RE:Chan HD Edition Beta 3" width="648" height="52" loading="lazy">
+            <p class="tag tag-live">Beta 3 · pré-release</p>
             <h3 class="version-name">RE:Chan HD Edition</h3>
             <p class="version-by">por <strong>Lucas Marcelo Soares</strong> · PSP</p>
             <dl class="specs">
               <div><dt>Plataforma</dt><dd>PSP (PSPSDK, MIPS Allegrex)</dd></div>
               <div><dt>Render</dt><dd>Backend GU próprio</dd></div>
               <div><dt>Tela</dt><dd>480×272 nativa</dd></div>
-              <div><dt>Lançamento</dt><dd>Beta 2, 14/10/2026</dd></div>
+              <div><dt>Lançamento</dt><dd>Beta 3, 17/10/2026</dd></div>
             </dl>
             <ul class="ticks">
               <li>Sem emulação e sem GLFW/OpenGL: o jogo fala direto com o GU</li>
               <li>58,9 a 60,05&nbsp;FPS nos 7 cenários do benchmark final no PSP-3000</li>
               <li>Vídeos com legendas em seis idiomas, HUD Moderno ou Clássico e câmeras mais próximas</li>
               <li>Extrai os arquivos da imagem do disco no próprio PSP</li>
+              <li><strong>Corrigido:</strong> os inimigos do dock da Orla (Waterfront&nbsp;1) voltam a atacar</li>
             </ul>
-            <a class="btn btn-primary btn-block" href="https://github.com/luckvice/ReChan-Enhanced/releases/tag/v1.0.0-beta2_PSP" rel="noopener">Baixar a Beta 2</a>
+            <a class="btn btn-primary btn-block" href="assets/downloads/rechan-psp-beta3.zip">Baixar a Beta 3</a>
+            <p class="small"><a class="link" href="https://github.com/luckvice/ReChan-Enhanced/releases/tag/v1.0.0-beta3_PSP" rel="noopener">Notas, checksums e build de depuração no GitHub</a></p>
           </article>
 
           <article class="card version">
@@ -281,7 +283,16 @@
           <div class="hud-panel">
             <p class="hud-title">Como jogar</p>
             <p>Precisa de um PSP-2000, 3000 ou Go com custom firmware ou HEN, e da imagem do seu disco americano (<span class="mono">SLUS-00684</span>, de preferência o <span class="mono">.bin</span>). Copie a pasta <span class="mono">RECHAN</span> do zip para <span class="mono">PSP/GAME/</span>, a imagem para <span class="mono">PSP/GAME/RECHAN/discimage/</span> e abra o jogo: ele extrai o que precisa em alguns minutos. O pacote não traz imagem de disco nem conteúdo original.</p>
-            <p><a class="link" href="https://github.com/luckvice/ReChan-Enhanced/releases/tag/v1.0.0-beta2_PSP" rel="noopener">Baixar a Beta 2 no GitHub</a></p>
+            <p><a class="link" href="https://github.com/luckvice/ReChan-Enhanced/releases/tag/v1.0.0-beta3_PSP" rel="noopener">Baixar a Beta 3 no GitHub</a></p>
+          </div>
+          <div class="hud-panel">
+            <p class="hud-title">Novidades e correções · Beta 3</p>
+            <ul class="plain">
+              <li><strong>Corrigido:</strong> os inimigos do dock da Orla (Waterfront&nbsp;1) apareciam parados e sem hitbox. No PSP a janela ativa de blocos voltou a acompanhar a janela de desenho 16:9, como na Beta 1, então eles são ativados e lutam de novo.</li>
+              <li><strong>Corrigido:</strong> o modelo dos inimigos não é mais liberado enquanto ainda está em cena.</li>
+              <li><strong>Novo (build de depuração):</strong> menu <span class="mono">DEBUG</span> com seletor de fase/zona e viagem direta para qualquer cena (NIS). Ele não existe no pacote de release — é uma segunda build, separada, para chegar rápido a qualquer ponto do jogo (<a class="link" href="assets/downloads/rechan-psp-beta3-debug.zip">baixar o build de depuração</a>).</li>
+              <li>Desktop, macOS e upstream sem mudança de comportamento.</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -679,11 +690,11 @@
         <header class="section-head">
           <p class="kicker">Direto do Vision Master</p>
           <h2 id="status-title" class="yk">Estado atual</h2>
-          <p class="lead">Retrato de 14/10/2026 do quadro de tarefas do projeto (<span class="mono">docs/visionmaster</span>), no dia da RE:Chan HD Edition Beta 2. Metas que ainda não foram batidas aparecem como abertas.</p>
+          <p class="lead">Retrato de 17/10/2026 do quadro de tarefas do projeto (<span class="mono">docs/visionmaster</span>), no dia da RE:Chan HD Edition Beta 3. Metas que ainda não foram batidas aparecem como abertas.</p>
         </header>
 
         <div class="stats stats-status">
-          <div class="stat"><p class="stat-label">Tarefas concluídas</p><p class="stat-value">19</p></div>
+          <div class="stat"><p class="stat-label">Tarefas concluídas</p><p class="stat-value">21</p></div>
           <div class="stat"><p class="stat-label">Em andamento</p><p class="stat-value">2</p></div>
           <div class="stat"><p class="stat-label">Planejadas</p><p class="stat-value">6</p></div>
           <div class="stat"><p class="stat-label">Meta de 60 FPS no PSP</p><p class="stat-value stat-done">Batida</p></div>
@@ -717,6 +728,9 @@
           <div class="board-col">
             <h3 class="board-head"><span class="state state-done" aria-hidden="true">✓</span> Concluídas</h3>
             <ol class="done-list">
+              <li><time datetime="2026-10-17">17/10</time> RE:Chan HD Edition Beta 3</li>
+              <li><time datetime="2026-10-17">17/10</time> Correção: inimigos do dock da Orla (Waterfront&nbsp;1) ficavam inertes</li>
+              <li><time datetime="2026-10-17">17/10</time> Menu DEBUG no PSP, no build de depuração</li>
               <li><time datetime="2026-10-14">14/10</time> RE:Chan HD Edition Beta 2</li>
               <li><time datetime="2026-10-14">14/10</time> Launcher com download e atualização automática</li>
               <li><time datetime="2026-10-14">14/10</time> Release desktop v1.0.2-beta com o backend Metal</li>
@@ -796,7 +810,7 @@
               <p class="tag">Metal Edition, PSP Edition e Launcher</p>
               <h3>Lucas Marcelo Soares</h3>
               <p class="credit-org">luckvice</p>
-              <p>Backend Metal para macOS, suporte a DualSense, o porte nativo para PSP com toda a rodada de otimização no aparelho, as Edições Beta 1 e Beta 2 e o launcher com download e atualização automática do jogo.</p>
+              <p>Backend Metal para macOS, suporte a DualSense, o porte nativo para PSP com toda a rodada de otimização no aparelho, as Edições Beta 1, Beta 2 e Beta 3 e o launcher com download e atualização automática do jogo.</p>
               <a class="link" href="https://github.com/luckvice/ReChan-Enhanced" rel="noopener">GitHub · luckvice/ReChan-Enhanced</a>
             </div>
           </article>
@@ -811,6 +825,7 @@
           <li><time>10/10/2026</time><span>Menus nativos, selo PSP EDITION e quatro rodadas de desempenho no PSP-3000</span></li>
           <li><time>11/10/2026</time><span>PSP Edition Beta 1: 60&nbsp;FPS, vídeos com legendas e extração no próprio PSP</span></li>
           <li><time>14/10/2026</time><span>RE:Chan HD Edition Beta 2, launcher com atualização automática e release desktop v1.0.2-beta</span></li>
+          <li><time>17/10/2026</time><span>RE:Chan HD Edition Beta 3: inimigos do dock da Orla corrigidos e menu DEBUG no build de depuração</span></li>
         </ol>
 
         <div class="hud-panel original">
