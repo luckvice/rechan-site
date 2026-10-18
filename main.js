@@ -3,7 +3,94 @@
   "use strict";
 
   const SVG_NS = "http://www.w3.org/2000/svg";
-  const fmt = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const translations = window.RECHAN_TRANSLATIONS || {};
+  const reverseTranslations = new Map(Object.entries(translations).map(([source, translated]) => [translated, source]));
+  let activeLocale = "pt-BR";
+  let renderCharts = () => {};
+  const originalText = new WeakMap();
+  const originalAttributes = new WeakMap();
+  const normalizeCopy = (value) => String(value).replace(/\s+/gu, " ").trim();
+  const formatSeparators = (value) => value
+    .replace(/\b(\d{1,3})\.(\d{3})(?=\b)/g, "$1,$2")
+    .replace(/(\d),(?=\d)/g, "$1.");
+  const translate = (value) => {
+    const key = normalizeCopy(value);
+    if (activeLocale === "en") return translations[key] || formatSeparators(value);
+    return reverseTranslations.get(key) || value;
+  };
+  const fmt = (v) => v.toLocaleString(activeLocale === "en" ? "en-US" : "pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+  function supportedLocale(value) {
+    if (value === "en" || String(value).toLowerCase().startsWith("en-")) return "en";
+    if (value === "pt-BR" || String(value).toLowerCase().startsWith("pt-")) return "pt-BR";
+    return null;
+  }
+
+  function initialLocale() {
+    const queryLocale = supportedLocale(new URLSearchParams(location.search).get("lang"));
+    if (queryLocale) return queryLocale;
+    try {
+      const savedLocale = supportedLocale(localStorage.getItem("rechan-site-language"));
+      if (savedLocale) return savedLocale;
+    } catch { /* Storage may be disabled; the page still works without it. */ }
+    const browserLanguages = navigator.languages?.length ? navigator.languages : [navigator.language];
+    return browserLanguages.map(supportedLocale).find(Boolean) || "pt-BR";
+  }
+
+  function localizeDocument(locale) {
+    activeLocale = locale;
+    document.documentElement.lang = locale;
+
+    const textWalker = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_TEXT);
+    while (textWalker.nextNode()) {
+      const node = textWalker.currentNode;
+      if (!originalText.has(node)) originalText.set(node, node.nodeValue);
+      const source = originalText.get(node);
+      const key = normalizeCopy(source);
+      if (!key) continue;
+      const translated = locale === "en" ? translations[key] : source.trim();
+      const value = translated || source.trim();
+      const localized = translated ? value : (locale === "en" ? formatSeparators(value) : value);
+      const leading = source.match(/^\s*/u)?.[0] || "";
+      const trailing = source.match(/\s*$/u)?.[0] || "";
+      node.nodeValue = `${leading}${localized}${trailing}`;
+    }
+
+    const translatableAttributes = ["alt", "aria-label", "title", "data-caption", "data-alt", "content", "placeholder"];
+    document.querySelectorAll("*").forEach((element) => {
+      let originals = originalAttributes.get(element);
+      if (!originals) {
+        originals = new Map();
+        originalAttributes.set(element, originals);
+      }
+      for (const attribute of translatableAttributes) {
+        if (!element.hasAttribute(attribute)) continue;
+        if (!originals.has(attribute)) originals.set(attribute, element.getAttribute(attribute));
+        const source = originals.get(attribute);
+        const key = normalizeCopy(source);
+        const translated = locale === "en" ? translations[key] : null;
+        const value = translated || (locale === "en" ? formatSeparators(source) : source);
+        element.setAttribute(attribute, value);
+      }
+    });
+
+    const selector = document.getElementById("language-select");
+    if (selector) selector.value = locale;
+    try { localStorage.setItem("rechan-site-language", locale); } catch { /* Optional preference. */ }
+  }
+
+  const languageSelector = document.getElementById("language-select");
+  localizeDocument(initialLocale());
+  languageSelector?.addEventListener("change", () => {
+    const locale = supportedLocale(languageSelector.value) || "pt-BR";
+    localizeDocument(locale);
+    try {
+      const url = new URL(location.href);
+      url.searchParams.set("lang", locale);
+      history.replaceState(null, "", url);
+    } catch { /* file:// pages and restricted histories can still switch language. */ }
+    renderCharts();
+  });
 
   // ---------- menu móvel ----------
   const toggle = document.querySelector(".nav-toggle");
@@ -106,10 +193,10 @@
       svg.append(el("line", { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t), stroke: token("--chart-grid"), "stroke-width": 1, "shape-rendering": "crispEdges" }));
       svg.append(el("text", { class: "tick", x: m.l - 8, y: y(t) + 4, "text-anchor": "end" }, String(t)));
     }
-    // Meta de 60 FPS, ainda não atingida.
+    // The target is localized with the rest of the chart.
     svg.append(el("line", { x1: m.l, x2: W - m.r, y1: y(60), y2: y(60), stroke: token("--wip"), "stroke-width": 1, "shape-rendering": "crispEdges" }));
     svg.append(el("text", { class: "tick", x: m.l - 8, y: y(60) + 4, "text-anchor": "end" }, "60"));
-    svg.append(el("text", { class: "goal", x: W - m.r, y: y(60) - 8, "text-anchor": "end" }, "Meta: 60 FPS"));
+    svg.append(el("text", { class: "goal", x: W - m.r, y: y(60) - 8, "text-anchor": "end" }, translate("Meta: 60 FPS")));
 
     const tip = makeTooltip(host);
     const band = iw / data.length;
@@ -121,9 +208,9 @@
       const mark = el("path", { class: "mark", d: colPath(cx - bw / 2, top, bw, y0), fill: token("--chart-b") });
       svg.append(hit, mark);
       svg.append(el("text", { class: "val", x: cx, y: top - 8, "text-anchor": "middle" }, fmt(d.fps)));
-      svg.append(el("text", { class: "cat", x: cx, y: y0 + 19, "text-anchor": "middle" }, d.label));
-      if (d.sub) svg.append(el("text", { class: "cat-sub", x: cx, y: y0 + 35, "text-anchor": "middle" }, d.sub));
-      bindHit(hit, tip, `<b>${d.label}${d.sub ? " · " + d.sub : ""}</b><br>${fmt(d.fps)} FPS de média<br>p95 ${fmt(d.p95)} ms`, cx, top);
+      svg.append(el("text", { class: "cat", x: cx, y: y0 + 19, "text-anchor": "middle" }, translate(d.label)));
+      if (d.sub) svg.append(el("text", { class: "cat-sub", x: cx, y: y0 + 35, "text-anchor": "middle" }, translate(d.sub)));
+      bindHit(hit, tip, `<b>${translate(d.label)}${d.sub ? " · " + translate(d.sub) : ""}</b><br>${fmt(d.fps)} ${translate("FPS de média")}<br>p95 ${fmt(d.p95)} ms`, cx, top);
     });
     hostReplace(host, svg);
   }
@@ -131,8 +218,8 @@
   // Antes e depois por cenário (duas séries).
   function drawPairs(host, data, names) {
     const series = [
-      { key: "before", name: names[0], color: token("--chart-a"), ink: "#ffffff" },
-      { key: "after", name: names[1], color: token("--chart-b"), ink: "#140800" },
+      { key: "before", name: translate(names[0]), color: token("--chart-a"), ink: "#ffffff" },
+      { key: "after", name: translate(names[1]), color: token("--chart-b"), ink: "#140800" },
     ];
     const W = Math.max(280, host.clientWidth);
     const bh = 18, gap = 2, groupGap = 34;
@@ -151,12 +238,12 @@
     }
     svg.append(el("line", { x1: x(60), x2: x(60), y1: m.t - 6, y2: m.t + ih, stroke: token("--wip"), "stroke-width": 1, "shape-rendering": "crispEdges" }));
     svg.append(el("text", { class: "tick", x: x(60), y: m.t + ih + 20, "text-anchor": "middle" }, "60"));
-    svg.append(el("text", { class: "goal", x: x(60), y: m.t - 12, "text-anchor": "end" }, "Meta: 60 FPS"));
+    svg.append(el("text", { class: "goal", x: x(60), y: m.t - 12, "text-anchor": "end" }, translate("Meta: 60 FPS")));
 
     const tip = makeTooltip(host);
     data.forEach((d, gi) => {
       const gy = m.t + gi * (groupH + groupGap);
-      svg.append(el("text", { class: "cat", x: m.l - 10, y: gy + groupH / 2 + 4, "text-anchor": "end" }, d.label));
+      svg.append(el("text", { class: "cat", x: m.l - 10, y: gy + groupH / 2 + 4, "text-anchor": "end" }, translate(d.label)));
       series.forEach((s, si) => {
         const v = d[s.key];
         const by = gy + si * (bh + gap);
@@ -165,7 +252,7 @@
         svg.append(hit, mark);
         // Rótulo dentro da ponta da barra (todas são largas o bastante), com tinta pelo contraste do preenchimento.
         svg.append(el("text", { class: "val-in", x: x(v) - 8, y: by + bh / 2 + 4.5, "text-anchor": "end", fill: s.ink }, fmt(v)));
-        bindHit(hit, tip, `<b>Cenário ${d.label}</b><br>${names[0]}: ${fmt(d.before)} FPS<br>${names[1]}: ${fmt(d.after)} FPS`, x(v), by);
+        bindHit(hit, tip, `<b>${translate("Cenário")} ${d.label}</b><br>${translate(names[0])}: ${fmt(d.before)} FPS<br>${translate(names[1])}: ${fmt(d.after)} FPS`, x(v), by);
       });
     });
 
@@ -186,7 +273,7 @@
       { label: "S06", cpu: 13.45, tel: 13.53 },
       { label: "S07", cpu: 9.98, tel: 10.33 },
     ];
-    const fmt2 = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmt2 = (v) => v.toLocaleString(activeLocale === "en" ? "en-US" : "pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const W = Math.max(280, host.clientWidth);
     const bh = 18, gap = 10;
     const m = { l: 40, r: 14, t: 26, b: 30 };
@@ -203,19 +290,19 @@
     }
     // Frame inteiro a 60 FPS fecha o eixo; a meta é 70% dele.
     svg.append(el("line", { x1: x(frame), x2: x(frame), y1: m.t - 6, y2: m.t + ih, stroke: token("--chart-grid"), "stroke-width": 1, "shape-rendering": "crispEdges" }));
-    svg.append(el("text", { class: "tick", x: x(frame), y: m.t + ih + 20, "text-anchor": "end" }, "16,7 ms"));
+    svg.append(el("text", { class: "tick", x: x(frame), y: m.t + ih + 20, "text-anchor": "end" }, translate("16,7 ms")));
     svg.append(el("line", { x1: x(goal), x2: x(goal), y1: m.t - 6, y2: m.t + ih, stroke: token("--wip"), "stroke-width": 1, "shape-rendering": "crispEdges" }));
-    svg.append(el("text", { class: "goal", x: x(goal), y: m.t - 12, "text-anchor": "middle" }, "Meta: 11,7 ms"));
+    svg.append(el("text", { class: "goal", x: x(goal), y: m.t - 12, "text-anchor": "middle" }, translate("Meta: 11,7 ms")));
 
     const tip = makeTooltip(host);
     data.forEach((d, i) => {
       const by = m.t + i * (bh + gap);
-      svg.append(el("text", { class: "cat", x: m.l - 10, y: by + bh / 2 + 4, "text-anchor": "end" }, d.label));
+      svg.append(el("text", { class: "cat", x: m.l - 10, y: by + bh / 2 + 4, "text-anchor": "end" }, translate(d.label)));
       const hit = el("rect", { class: "hit", x: m.l, y: by - gap / 2, width: iw, height: bh + gap });
       const mark = el("path", { class: "mark", d: barPath(x(0), x(d.cpu), by, bh), fill: token("--chart-b") });
       svg.append(hit, mark);
       svg.append(el("text", { class: "val-in", x: x(d.cpu) - 8, y: by + bh / 2 + 4.5, "text-anchor": "end", fill: "#140800" }, fmt2(d.cpu)));
-      bindHit(hit, tip, `<b>Cenário ${d.label}</b><br>${fmt2(d.cpu)} ms de CPU por frame<br>com telemetria: ${fmt2(d.tel)} ms`, x(d.cpu), by);
+      bindHit(hit, tip, `<b>${translate("Cenário")} ${d.label}</b><br>${fmt2(d.cpu)} ${translate("ms de CPU por frame")}<br>${translate("com telemetria:")} ${fmt2(d.tel)} ms`, x(d.cpu), by);
     });
     hostReplace(host, svg);
   }
@@ -231,7 +318,7 @@
       { label: "S06", fps: 59.05 },
       { label: "S07", fps: 60.05, note: "hub" },
     ];
-    const fmt2 = (v) => v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmt2 = (v) => v.toLocaleString(activeLocale === "en" ? "en-US" : "pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const W = Math.max(280, host.clientWidth);
     const bh = 18, gap = 10;
     const m = { l: 40, r: 14, t: 26, b: 30 };
@@ -248,17 +335,17 @@
     }
     svg.append(el("line", { x1: x(60), x2: x(60), y1: m.t - 6, y2: m.t + ih, stroke: token("--wip"), "stroke-width": 1, "shape-rendering": "crispEdges" }));
     svg.append(el("text", { class: "tick", x: x(60), y: m.t + ih + 20, "text-anchor": "middle" }, "60"));
-    svg.append(el("text", { class: "goal", x: x(60), y: m.t - 12, "text-anchor": "end" }, "Meta: 60 FPS"));
+    svg.append(el("text", { class: "goal", x: x(60), y: m.t - 12, "text-anchor": "end" }, translate("Meta: 60 FPS")));
 
     const tip = makeTooltip(host);
     data.forEach((d, i) => {
       const by = m.t + i * (bh + gap);
-      svg.append(el("text", { class: "cat", x: m.l - 10, y: by + bh / 2 + 4, "text-anchor": "end" }, d.label));
+      svg.append(el("text", { class: "cat", x: m.l - 10, y: by + bh / 2 + 4, "text-anchor": "end" }, translate(d.label)));
       const hit = el("rect", { class: "hit", x: m.l, y: by - gap / 2, width: iw, height: bh + gap });
       const mark = el("path", { class: "mark", d: barPath(x(0), x(d.fps), by, bh), fill: token("--chart-b") });
       svg.append(hit, mark);
       svg.append(el("text", { class: "val-in", x: x(d.fps) - 8, y: by + bh / 2 + 4.5, "text-anchor": "end", fill: "#140800" }, fmt2(d.fps)));
-      bindHit(hit, tip, `<b>Cenário ${d.label}${d.note ? ` (${d.note})` : ""}</b><br>${fmt2(d.fps)} FPS médios`, x(d.fps), by);
+      bindHit(hit, tip, `<b>${translate("Cenário")} ${d.label}${d.note ? ` (${translate(d.note)})` : ""}</b><br>${fmt2(d.fps)} ${translate("FPS médios")}`, x(d.fps), by);
     });
     hostReplace(host, svg);
   }
@@ -284,7 +371,7 @@
     [document.getElementById("chart-final"), drawFinal],
   ].filter(([host]) => host);
 
-  const render = () => charts.forEach(([host, draw]) => {
+  renderCharts = () => charts.forEach(([host, draw]) => {
     host.querySelector(".tooltip")?.remove();
     draw(host);
   });
@@ -294,8 +381,9 @@
     const widths = charts.map(([host]) => Math.round(host.clientWidth));
     if (widths.join() === lastWidths.join()) return;
     lastWidths = widths;
-    render();
+    renderCharts();
   });
   charts.forEach(([host]) => ro.observe(host));
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(render);
+  renderCharts();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderCharts);
 })();
